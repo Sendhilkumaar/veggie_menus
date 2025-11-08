@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vegetarian Menus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4CAF50",
+              "background-light": "#F8F9FA",
+              "background-dark": "#121212",
+              "card-light": "#FFFFFF",
+              "card-dark": "#1E1E1E",
+              "text-primary-light": "#333333",
+              "text-primary-dark": "#E0E0E0",
+              "text-secondary-light": "#757575",
+              "text-secondary-dark": "#BDBDBD",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<!-- Header Bar -->
+<header class="sticky top-0 z-10 flex h-16 items-center border-b border-gray-200/80 dark:border-gray-800/80 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm px-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">
+                    eco
+                 </span>
+<h1 class="text-xl font-bold text-text-primary-light dark:text-text-primary-dark">Vegetarian Menus</h1>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 p-4">
+<div class="space-y-4">
+  <!-- load data from db.js (defines `restaurants` and `menus`) -->
+  <script src="db.js"></script>
+<script>
+(() => {
+  // prefer globals defined in db.js; fall back to embedded defaults if missing
+  const _restaurants = (typeof restaurants !== 'undefined') ? restaurants : [
+    { name: "Sprout & Spoon", icon: "restaurant", distance: "0.5 miles away" },
+    { name: "The Green Plate", icon: "ramen_dining", distance: "1.2 miles away" },
+    { name: "The Yellow Plate", icon: "ramen_dining", distance: "1.2 miles away" },
+    { name: "The Red Plate", icon: "ramen_dining", distance: "1.2 miles away" },
+    { name: "Earthly Eats", icon: "local_pizza", distance: "2.0 miles away" }
+  ];
+
+  const _menus = (typeof menus !== 'undefined') ? menus : [
+    { name: "Sprout & Spoon", items: [
+      {item: 'Margherita', price: 12.50},
+      {item: 'Pepperoni', price: 13.75},
+      {item: 'Four Cheese', price: 14.50},
+      {item: 'Garlic Knots (6)', price: 5.25},
+      {item: 'Caesar Salad', price: 9.00}
+    ]},
+    { name: 'The Green Plate', items: [
+      {item: 'Tuna Nigiri (2pc)', price: 9.00},
+      {item: 'Salmon Sashimi (3pc)', price: 11.50},
+      {item: 'Chef Omakase (sample)', price: 65.00},
+      {item: 'Miso Soup', price: 3.50},
+      {item: 'Edamame', price: 4.50}
+    ]},
+    { name: 'The Yellow Plate', items: [
+      {item: 'Kale Bowl', price: 10.00},
+      {item: 'Avocado Toast', price: 9.50},
+      {item: 'Berry Smoothie', price: 5.50},
+      {item: 'Quinoa Salad', price: 11.25},
+      {item: 'Tofu Wrap', price: 8.75}
+    ]},
+    { name: "The Red Plate", items: [
+      {item: 'Classic Burger', price: 11.00},
+      {item: 'Bacon Cheddar', price: 13.25},
+      {item: 'Truffle Fries', price: 6.50},
+      {item: 'Veggie Burger', price: 11.50},
+      {item: 'Milkshake (16oz)', price: 4.75}
+    ]},
+    { name: 'Earthly Eats', items: [
+      {item: 'Escargots', price: 14.00},
+      {item: 'Duck Confit', price: 28.00},
+      {item: 'Steak Frites', price: 32.00},
+      {item: 'Crème Brûlée', price: 9.50},
+      {item: 'Cheese Plate', price: 16.00}
+    ]}
+  ];
+
+  const container = document.currentScript.parentElement;
+
+  // helper to escape HTML
+  function _escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+  // Render menu rows for inline expansion
+  function renderMenuHtmlFor(name){
+    const m = _menus.find(x => x.name === name);
+    if(!m) return '<p class="text-sm">No menu available.</p>';
+    return `<div class="space-y-2">${m.items.map(it => `<div class="flex justify-between py-2 border-b last:border-b-0"><div>${_escapeHtml(it.item)}</div><div class="font-medium">$${Number(it.price).toFixed(2)}</div></div>`).join('')}</div>`;
+  }
+
+  _restaurants.forEach(r => {
+    const a = document.createElement("a");
+    a.className = "block group";
+    a.href = "#";
+    a.innerHTML = `
+      <div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-4 min-h-[88px] rounded-t-lg shadow-sm transition-all duration-200 group-hover:shadow-md group-active:scale-[0.98]">
+        <div class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 shrink-0 size-14">
+          <span class="material-symbols-outlined text-primary text-3xl">${r.icon}</span>
+        </div>
+        <div class="flex-1">
+          <p class="text-text-primary-light dark:text-text-primary-dark text-lg font-semibold leading-tight line-clamp-1">${r.name}</p>
+          <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal line-clamp-2">${r.distance}</p>
+        </div>
+        <div class="shrink-0 text-text-secondary-light dark:text-text-secondary-dark transition-transform duration-200 group-hover:translate-x-1">
+          <span class="material-symbols-outlined text-2xl">chevron_right</span>
+        </div>
+      </div>
+    `;
+
+    // create inline menu container (hidden by default)
+    const menuDiv = document.createElement('div');
+    menuDiv.className = 'px-4 pb-4 text-sm text-text-secondary-light dark:text-text-secondary-dark hidden bg-card-light/50 dark:bg-card-dark/50 rounded-b-lg';
+    menuDiv.innerHTML = renderMenuHtmlFor(r.name);
+
+    // toggle on click: expand/collapse the inline menu
+    a.addEventListener('click', (evt)=>{ evt.preventDefault(); const wasHidden = menuDiv.classList.contains('hidden'); if(wasHidden){ menuDiv.classList.remove('hidden'); } else { menuDiv.classList.add('hidden'); } });
+
+    // append card and menu container
+    container.appendChild(a);
+    container.appendChild(menuDiv);
+  });
+})();
+</script>
+</div>
+</a>
+</div>
+</main>
+</div>
+</body></html>
