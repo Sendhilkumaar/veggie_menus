@@ -51,16 +51,44 @@
 <body class="font-display">
 <div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
 <!-- Header Bar -->
-<header class="sticky top-0 z-10 flex h-16 items-center border-b border-gray-200/80 dark:border-gray-800/80 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm px-4">
+<header class="sticky top-0 z-10 flex min-h-16 items-center justify-between gap-4 border-b border-gray-200/80 dark:border-gray-800/80 bg-background-light/80 dark:bg-background-dark/80 px-4 py-3 backdrop-blur-sm">
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-primary text-3xl">
                     eco
                  </span>
 <h1 class="text-xl font-bold text-text-primary-light dark:text-text-primary-dark">Vegetarian Menus</h1>
 </div>
+<nav aria-label="Primary" class="overflow-x-auto">
+<ul class="flex min-w-max items-center gap-2 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">
+<li><a class="rounded-full px-3 py-2 transition-colors hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#about-us" id="about-us-link">About Us</a></li>
+<li><a class="rounded-full px-3 py-2 transition-colors hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20" href="#contact-us" id="contact-us-link">Contact Us</a></li>
+</ul>
+</nav>
 </header>
 <!-- Main Content -->
 <main class="flex-1 p-4">
+<section class="mb-4 hidden rounded-xl border border-primary/20 bg-white/90 p-5 shadow-sm dark:bg-card-dark/90" id="about-us-panel">
+<div class="mb-3 flex items-start justify-between gap-3">
+<h2 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">About Us</h2>
+<button aria-label="Close About Us" class="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-secondary-light transition-colors hover:bg-primary/10 hover:text-primary dark:text-text-secondary-dark dark:hover:bg-primary/20" id="about-us-close" type="button">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<div class="space-y-4 text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">
+<p>When a vegetarian walks into a restaurant, the first challenge is often simply finding what they can eat. Most menus in the US are dominated by meat-based dishes, forcing vegetarians to scroll through long lists just to identify the few options available.</p>
+<p>This webpage curates only the vegetarian dishes from each restaurant’s menu, making it easy for vegetarians to quickly spot, choose, and enjoy the food that fits their diet.</p>
+<p>The page currently features a selection of restaurants around Princeton, New Jersey, with many more locations to be added soon.</p>
+</div>
+</section>
+<section class="mb-4 hidden rounded-xl border border-primary/20 bg-white/90 p-5 shadow-sm dark:bg-card-dark/90" id="contact-us-panel">
+<div class="mb-3 flex items-start justify-between gap-3">
+<h2 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">Contact Us</h2>
+<button aria-label="Close Contact Us" class="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-secondary-light transition-colors hover:bg-primary/10 hover:text-primary dark:text-text-secondary-dark dark:hover:bg-primary/20" id="contact-us-close" type="button">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<p class="text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">Email Id: coming_soon@XYZ.com</p>
+</section>
 <div class="space-y-4">
   <!-- load data from db.js (defines `restaurants` and `menus`) -->
   <script src="db.js"></script>
@@ -114,15 +142,125 @@
   ];
 
   const container = document.currentScript.parentElement;
+  const aboutUsLink = document.getElementById('about-us-link');
+  const aboutUsPanel = document.getElementById('about-us-panel');
+  const aboutUsClose = document.getElementById('about-us-close');
+  const contactUsLink = document.getElementById('contact-us-link');
+  const contactUsPanel = document.getElementById('contact-us-panel');
+  const contactUsClose = document.getElementById('contact-us-close');
+
+  function togglePanel(panel){
+    panel.classList.toggle('hidden');
+    if(!panel.classList.contains('hidden')) {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function closePanel(panel){
+    panel.classList.add('hidden');
+  }
+
+  if(aboutUsLink && aboutUsPanel) {
+    aboutUsLink.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      togglePanel(aboutUsPanel);
+    });
+  }
+
+  if(aboutUsClose && aboutUsPanel) {
+    aboutUsClose.addEventListener('click', () => {
+      closePanel(aboutUsPanel);
+    });
+  }
+
+  if(contactUsLink && contactUsPanel) {
+    contactUsLink.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      togglePanel(contactUsPanel);
+    });
+  }
+
+  if(contactUsClose && contactUsPanel) {
+    contactUsClose.addEventListener('click', () => {
+      closePanel(contactUsPanel);
+    });
+  }
 
   // helper to escape HTML
   function _escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+  function _formatPrice(price){
+    if(price === null || price === undefined || price === '') return '';
+    const numericPrice = Number(price);
+    return Number.isFinite(numericPrice) ? `$${numericPrice.toFixed(2)}` : _escapeHtml(price);
+  }
+
+  function _normalizeGroupLabel(value, fallback){
+    if(value === null || value === undefined) return fallback;
+    const text = String(value).trim();
+    return text || fallback;
+  }
 
   // Render menu rows for inline expansion
   function renderMenuHtmlFor(name){
     const m = _menus.find(x => x.name === name);
     if(!m) return '<p class="text-sm">No menu available.</p>';
-    return `<div class="space-y-2">${m.items.map(it => `<div class="flex justify-between py-2 border-b last:border-b-0"><div>${_escapeHtml(it.item)}</div><div class="font-medium">$${Number(it.price).toFixed(2)}</div></div>`).join('')}</div>`;
+
+    const vegetarianItems = m.items.filter(it => it.is_vegetarian === true);
+    if(!vegetarianItems.length) {
+      return '<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">No vegetarian items available.</p>';
+    }
+
+    const groupedMenus = new Map();
+    vegetarianItems.forEach(it => {
+      const menuSection = _normalizeGroupLabel(it.menu_section, 'Menu');
+      const categorySection = _normalizeGroupLabel(it.category_section, 'Items');
+
+      if(!groupedMenus.has(menuSection)) {
+        groupedMenus.set(menuSection, new Map());
+      }
+
+      const categories = groupedMenus.get(menuSection);
+      if(!categories.has(categorySection)) {
+        categories.set(categorySection, []);
+      }
+
+      categories.get(categorySection).push(it);
+    });
+
+    return `<div class="space-y-5">${Array.from(groupedMenus.entries()).map(([menuSection, categories]) => {
+      const showMenuHeader = groupedMenus.size > 1 || menuSection !== 'Menu';
+      const categoryMarkup = `<div class="space-y-4">${Array.from(categories.entries()).map(([categorySection, items]) => `
+            <details class="group overflow-hidden rounded-xl border border-gray-200/80 bg-white/80 shadow-sm transition-colors open:bg-white dark:border-gray-800/80 dark:bg-gray-900/40 dark:open:bg-gray-900/60" open>
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-3 border-b border-gray-200/80 px-4 py-3 dark:border-gray-800/80">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.16em] text-text-primary-light dark:text-text-primary-dark">${_escapeHtml(categorySection)}</h3>
+                <span class="material-symbols-outlined text-base text-text-secondary-light transition-transform duration-200 group-open:rotate-180 dark:text-text-secondary-dark">expand_more</span>
+              </summary>
+              <div class="divide-y divide-gray-200/80 dark:divide-gray-800/80">${items.map(it => `
+                <div class="flex items-start justify-between gap-4 px-4 py-3">
+                  <div class="min-w-0">
+                    <div class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">${_escapeHtml(it.item)}</div>
+                  </div>
+                  <div class="shrink-0 text-sm font-semibold text-text-primary-light dark:text-text-primary-dark">${_formatPrice(it.price)}</div>
+                </div>
+              `).join('')}</div>
+            </details>
+          `).join('')}</div>`;
+
+      if(!showMenuHeader) {
+        return `<section class="space-y-3">${categoryMarkup}</section>`;
+      }
+
+      return `
+        <details class="group overflow-hidden rounded-2xl border border-primary/20 bg-primary/5" >
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3">
+            <div class="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary dark:bg-primary/20">${_escapeHtml(menuSection)}</div>
+            <span class="material-symbols-outlined text-lg text-primary transition-transform duration-200 group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="px-1 pb-1">${categoryMarkup}</div>
+        </details>
+      `;
+    }).join('')}</div>`;
   }
 
   _restaurants.forEach(r => {
