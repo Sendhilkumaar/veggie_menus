@@ -1,0 +1,20 @@
+{
+  "nominatim_url": "https://nominatim.openstreetmap.org/search",
+  "overpass_url": "https://overpass-api.de/api/interpreter",
+  "user_agent": "veggie_menus/1.0",
+  "default_country": "us",
+  "geocode_timeout": 30,
+  "overpass_timeout": 60,
+  "overpass_max_retries": 3,
+  "overpass_retry_delay_seconds": 5,
+  "enrich_missing_websites": true,
+  "website_enrichment_throttle_seconds": 2,
+  "website_enrichment_row_delay_seconds": 1,
+  "csv_fieldnames": ["uniqueId", "name", "address", "cuisine", "website", "zip_code"],
+  "output_dir": "C:\\Users\\sendh\\OneDrive\\Documents\\git_clones\\veggie\\veggie_menus\\backend\\file_storage\\",
+  "log_dir": "C:\\Users\\sendh\\OneDrive\\Documents\\git_clones\\veggie\\veggie_menus\\backend\\logs\\",
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s %(levelname)s %(message)s"
+  }
+}

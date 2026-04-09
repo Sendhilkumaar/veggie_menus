@@ -1,0 +1,17 @@
+{
+  "input_file": "backend/file_storage/full_list_of_restaurants.csv",
+  "output_dir": "backend/file_storage",
+  "output_file": "full_list_of_menu_pages.csv",
+  "log_dir": "backend/logs",
+  "request_timeout_seconds": 8,
+  "allow_inferred_menu_url_on_forbidden": true,
+  "fallback_menu_paths": ["/menu", "/menus"],
+  "request_headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9"
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s %(levelname)s %(message)s"
+  }
+}

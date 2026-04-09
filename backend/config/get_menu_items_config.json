@@ -1,0 +1,30 @@
+{
+  "menu_pages_csv": "backend/file_storage/full_list_of_menu_pages.csv",
+  "output_dir": "backend/file_storage",
+  "output_file": "db_menu_items.json",
+  "log_dir": "backend/logs",
+  "request_timeout": 10,
+  "browser_automation": {
+    "enabled": true,
+    "headless": true,
+    "wait_after_load_ms": 8000,
+    "viewport": {
+      "width": 1440,
+      "height": 2200
+    },
+    "force_hosts": [
+      "pastiamoprinceton.com",
+      "tortugasmv.com",
+      "brickhousetavernandtap.namer.alohaonlineordering.com",
+      "ontheborder.olo.com",
+      "order.pfchangs.com",
+      "pfchangs.com",
+      "slicelife.com"
+    ]
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s %(levelname)s %(message)s"
+  }
+}
+

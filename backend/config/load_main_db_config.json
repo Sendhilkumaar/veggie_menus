@@ -1,0 +1,13 @@
+{
+  "input_file": "backend/file_storage/db_menu_marked.js",
+  "output_file": "backend/file_storage/db_menu_food.js",
+  "restaurants_variable": "restaurants",
+  "menus_variable": "menus",
+  "log_dir": "backend/logs",
+  "log_file": "load_main_db.log",
+  "drop_empty_menus": true,
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  }
+}

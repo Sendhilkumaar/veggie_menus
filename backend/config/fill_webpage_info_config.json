@@ -1,0 +1,20 @@
+{
+  "input_file": "backend/file_storage/full_list_of_restaurants.csv",
+  "log_dir": "backend/logs",
+  "log_file": "fill_webpage_info.log",
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  },
+  "request_timeout_seconds": 30,
+  "throttle_seconds": 2,
+  "row_delay_seconds": 1,
+  "country_keyword": "US",
+  "business_keyword": "restaurant",
+  "required_output_fields": ["website", "zip_code"],
+  "search_order": ["duckduckgo", "bing", "google"],
+  "request_headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9"
+  }
+}
