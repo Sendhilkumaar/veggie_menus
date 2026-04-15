@@ -3,7 +3,17 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Vegetarian Menus</title>
+<title>Vegetarian Menus in Princeton, NJ | Vegetarian Menus</title>
+<meta content="Browse vegetarian menu items from Princeton, New Jersey restaurants. Compare vegetarian dishes, explore menu sections, and sort Princeton-area restaurants by distance." name="description"/>
+<meta content="index, follow, max-image-preview:large" name="robots"/>
+<meta content="#4CAF50" name="theme-color"/>
+<meta content="Vegetarian Menus in Princeton, NJ | Vegetarian Menus" property="og:title"/>
+<meta content="Browse vegetarian menu items from Princeton, New Jersey restaurants. Compare vegetarian dishes, explore menu sections, and sort Princeton-area restaurants by distance." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="Vegetarian Menus" property="og:site_name"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="Vegetarian Menus in Princeton, NJ | Vegetarian Menus" name="twitter:title"/>
+<meta content="Browse vegetarian menu items from Princeton, New Jersey restaurants. Compare vegetarian dishes, explore menu sections, and sort Princeton-area restaurants by distance." name="twitter:description"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -67,6 +77,17 @@
 </header>
 <!-- Main Content -->
 <main class="flex-1 p-4">
+<section class="mb-4 overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-white to-emerald-50 p-6 shadow-sm dark:bg-card-dark/90" id="restaurants-overview">
+<div class="max-w-3xl space-y-3">
+<p class="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary dark:bg-primary/20">Princeton Vegetarian Restaurant Guide</p>
+<h2 class="text-2xl font-extrabold tracking-tight text-text-primary-light dark:text-text-primary-dark sm:text-3xl">Find vegetarian menu options across Princeton, New Jersey restaurants.</h2>
+<p class="text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark sm:text-base">Vegetarian Menus helps diners quickly scan vegetarian dishes from local restaurant menus instead of searching each restaurant site one by one. Browse Princeton-area restaurants, open menu sections, and sort listings by distance from your current location.</p>
+<div class="flex flex-wrap gap-3 pt-1 text-sm font-medium text-text-primary-light dark:text-text-primary-dark">
+<p class="rounded-full bg-white/80 px-3 py-2 shadow-sm dark:bg-card-dark/80" id="restaurant-count">Loading restaurant count...</p>
+<p class="rounded-full bg-white/80 px-3 py-2 shadow-sm dark:bg-card-dark/80" id="vegetarian-item-count">Loading vegetarian dish count...</p>
+</div>
+</div>
+</section>
 <section class="mb-4 hidden rounded-xl border border-primary/20 bg-white/90 p-5 shadow-sm dark:bg-card-dark/90" id="about-us-panel">
 <div class="mb-3 flex items-start justify-between gap-3">
 <h2 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark">About Us</h2>
@@ -89,7 +110,30 @@
 </div>
 <p class="text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">Email Id: coming_soon@XYZ.com</p>
 </section>
-<div class="space-y-4">
+<section class="mb-4 rounded-xl border border-primary/20 bg-white/90 p-4 shadow-sm dark:bg-card-dark/90">
+<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+<div>
+<h2 class="text-base font-bold text-text-primary-light dark:text-text-primary-dark">Restaurants</h2>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Use your current location to sort results from nearest to farthest.</p>
+</div>
+<div class="flex flex-col items-start gap-2 sm:items-end">
+<button class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-primary/40" id="sort-nearest-button" type="button">
+<span class="material-symbols-outlined text-lg">near_me</span>
+<span>Sort by my location</span>
+</button>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark" id="location-status">Showing default order.</p>
+</div>
+</div>
+</section>
+<section aria-labelledby="restaurant-directory-heading" class="space-y-4" id="restaurants">
+<div class="rounded-xl border border-primary/20 bg-white/90 p-4 shadow-sm dark:bg-card-dark/90">
+<h2 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark" id="restaurant-directory-heading">Vegetarian-friendly restaurant directory</h2>
+<p class="mt-2 text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark" id="restaurant-directory-summary">Browse Princeton-area restaurant listings and expand each one to review vegetarian dishes grouped by menu section.</p>
+<noscript>
+<p class="mt-3 text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">This directory uses JavaScript to render restaurant menus. Enable JavaScript to browse vegetarian menu items and sort restaurants by location.</p>
+</noscript>
+</div>
+<div class="space-y-4" id="restaurant-list">
   <!-- load data from db.js (defines `restaurants` and `menus`) -->
   <script src="db.js"></script>
 <script>
@@ -141,13 +185,153 @@
     ]}
   ];
 
-  const container = document.currentScript.parentElement;
+  const container = document.getElementById('restaurant-list');
   const aboutUsLink = document.getElementById('about-us-link');
   const aboutUsPanel = document.getElementById('about-us-panel');
   const aboutUsClose = document.getElementById('about-us-close');
   const contactUsLink = document.getElementById('contact-us-link');
   const contactUsPanel = document.getElementById('contact-us-panel');
   const contactUsClose = document.getElementById('contact-us-close');
+  const sortNearestButton = document.getElementById('sort-nearest-button');
+  const locationStatus = document.getElementById('location-status');
+  const restaurantCount = document.getElementById('restaurant-count');
+  const vegetarianItemCount = document.getElementById('vegetarian-item-count');
+  const restaurantDirectorySummary = document.getElementById('restaurant-directory-summary');
+  const structuredDataScriptId = 'restaurant-directory-structured-data';
+  const vegetarianRestaurantNames = new Set(
+    _menus
+      .filter(menu => menu.items.some(item => item.is_vegetarian === true))
+      .map(menu => menu.name)
+  );
+  const vegetarianItemsTotal = _menus.reduce((total, menu) => (
+    total + menu.items.filter(item => item.is_vegetarian === true).length
+  ), 0);
+  const state = {
+    restaurants: _restaurants
+      .filter(restaurant => vegetarianRestaurantNames.has(restaurant.name))
+      .map((restaurant, index) => ({
+      ...restaurant,
+      originalIndex: index,
+      computedDistanceMiles: null,
+      distanceLabel: restaurant.distance || 'nearby'
+    })),
+    expandedMenus: new Set(),
+    hasUserLocation: false,
+    userLocation: null
+  };
+
+  function _escapeHtml(str){
+    return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+  }
+
+  function _escapeAttribute(str){
+    return _escapeHtml(str);
+  }
+
+  function _toSlug(value){
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'restaurant';
+  }
+
+  function _buildRestaurantDescription(restaurant, vegetarianItems){
+    const itemCount = vegetarianItems.length;
+    const address = restaurant.address ? ` Located at ${restaurant.address}.` : '';
+    return `${restaurant.name} has ${itemCount} vegetarian menu item${itemCount === 1 ? '' : 's'} listed in this directory.${address}`;
+  }
+
+  function updateSeoSummary(){
+    const restaurantTotal = state.restaurants.length;
+
+    if(restaurantCount) {
+      restaurantCount.textContent = `${restaurantTotal} vegetarian-friendly restaurants listed`;
+    }
+
+    if(vegetarianItemCount) {
+      vegetarianItemCount.textContent = `${vegetarianItemsTotal} vegetarian dishes indexed`;
+    }
+
+    if(restaurantDirectorySummary) {
+      restaurantDirectorySummary.textContent = `Browse ${restaurantTotal} Princeton-area restaurants and expand each listing to review vegetarian dishes grouped by menu section.`;
+    }
+  }
+
+  function upsertStructuredData(){
+    const script = document.getElementById(structuredDataScriptId) || document.createElement('script');
+    script.id = structuredDataScriptId;
+    script.type = 'application/ld+json';
+
+    const itemListElement = state.restaurants.map((restaurant, index) => {
+      const menu = _menus.find(candidate => candidate.name === restaurant.name) || { items: [] };
+      const vegetarianItems = menu.items.filter(item => item.is_vegetarian === true);
+      const item = {
+        '@type': 'Restaurant',
+        name: restaurant.name,
+        description: _buildRestaurantDescription(restaurant, vegetarianItems),
+        servesCuisine: 'Vegetarian-friendly restaurant menu',
+        keywords: ['vegetarian menus', 'Princeton NJ restaurants', 'vegetarian dishes']
+      };
+
+      if(restaurant.address) {
+        item.address = restaurant.address;
+      }
+
+      if(restaurant.website) {
+        item.url = restaurant.website;
+      }
+
+      if(Number.isFinite(restaurant.latitude) && Number.isFinite(restaurant.longitude)) {
+        item.geo = {
+          '@type': 'GeoCoordinates',
+          latitude: restaurant.latitude,
+          longitude: restaurant.longitude
+        };
+      }
+
+      if(vegetarianItems.length) {
+        item.hasMenu = {
+          '@type': 'Menu',
+          name: `${restaurant.name} vegetarian menu`,
+          numberOfItems: vegetarianItems.length
+        };
+      }
+
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        item
+      };
+    });
+
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          name: 'Vegetarian Menus',
+          description: 'A directory of vegetarian menu items from Princeton, New Jersey restaurants.',
+          inLanguage: 'en-US'
+        },
+        {
+          '@type': 'CollectionPage',
+          name: 'Vegetarian Menus in Princeton, NJ',
+          description: 'Browse vegetarian dishes from Princeton-area restaurants and sort listings by distance.',
+          inLanguage: 'en-US'
+        },
+        {
+          '@type': 'ItemList',
+          name: 'Princeton vegetarian-friendly restaurants',
+          numberOfItems: itemListElement.length,
+          itemListElement
+        }
+      ]
+    });
+
+    if(!script.parentNode) {
+      document.head.appendChild(script);
+    }
+  }
 
   function togglePanel(panel){
     panel.classList.toggle('hidden');
@@ -186,9 +370,6 @@
     });
   }
 
-  // helper to escape HTML
-  function _escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
   function _formatPrice(price){
     if(price === null || price === undefined || price === '') return '';
     const numericPrice = Number(price);
@@ -199,6 +380,48 @@
     if(value === null || value === undefined) return fallback;
     const text = String(value).trim();
     return text || fallback;
+  }
+
+  function _toRadians(value){
+    return value * (Math.PI / 180);
+  }
+
+  function _calculateDistanceMiles(fromLatitude, fromLongitude, toLatitude, toLongitude){
+    const earthRadiusMiles = 3958.8;
+    const latitudeDelta = _toRadians(toLatitude - fromLatitude);
+    const longitudeDelta = _toRadians(toLongitude - fromLongitude);
+    const a = Math.sin(latitudeDelta / 2) ** 2
+      + Math.cos(_toRadians(fromLatitude)) * Math.cos(_toRadians(toLatitude)) * Math.sin(longitudeDelta / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return earthRadiusMiles * c;
+  }
+
+  function _formatDistanceMiles(distanceMiles){
+    if(!Number.isFinite(distanceMiles)) {
+      return 'Distance unavailable';
+    }
+    if(distanceMiles < 0.1) {
+      return 'Less than 0.1 miles away';
+    }
+    return `${distanceMiles.toFixed(1)} miles away`;
+  }
+
+  function _sortRestaurants(){
+    state.restaurants.sort((left, right) => {
+      const leftDistance = left.computedDistanceMiles;
+      const rightDistance = right.computedDistanceMiles;
+
+      if(Number.isFinite(leftDistance) && Number.isFinite(rightDistance)) {
+        return leftDistance - rightDistance;
+      }
+      if(Number.isFinite(leftDistance)) {
+        return -1;
+      }
+      if(Number.isFinite(rightDistance)) {
+        return 1;
+      }
+      return left.originalIndex - right.originalIndex;
+    });
   }
 
   // Render menu rows for inline expansion
@@ -263,42 +486,144 @@
     }).join('')}</div>`;
   }
 
-  _restaurants.forEach(r => {
-    const a = document.createElement("a");
-    a.className = "block group";
-    a.href = "#";
-    a.innerHTML = `
-      <div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-4 min-h-[88px] rounded-t-lg shadow-sm transition-all duration-200 group-hover:shadow-md group-active:scale-[0.98]">
-        <div class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 shrink-0 size-14">
-          <span class="material-symbols-outlined text-primary text-3xl">${r.icon}</span>
-        </div>
-        <div class="flex-1">
-          <p class="text-text-primary-light dark:text-text-primary-dark text-lg font-semibold leading-tight line-clamp-1">${r.name}</p>
-          <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal line-clamp-2">${r.distance}</p>
-        </div>
-        <div class="shrink-0 text-text-secondary-light dark:text-text-secondary-dark transition-transform duration-200 group-hover:translate-x-1">
-          <span class="material-symbols-outlined text-2xl">chevron_right</span>
-        </div>
-      </div>
-    `;
+  function renderRestaurants(){
+    container.replaceChildren();
 
-    // create inline menu container (hidden by default)
-    const menuDiv = document.createElement('div');
-    menuDiv.className = 'px-4 pb-4 text-sm text-text-secondary-light dark:text-text-secondary-dark hidden bg-card-light/50 dark:bg-card-dark/50 rounded-b-lg';
-    menuDiv.innerHTML = renderMenuHtmlFor(r.name);
+    updateSeoSummary();
+    upsertStructuredData();
 
-    // toggle on click: expand/collapse the inline menu
-    a.addEventListener('click', (evt)=>{ evt.preventDefault(); const wasHidden = menuDiv.classList.contains('hidden'); if(wasHidden){ menuDiv.classList.remove('hidden'); } else { menuDiv.classList.add('hidden'); } });
+    state.restaurants.forEach((restaurant) => {
+      const isExpanded = state.expandedMenus.has(restaurant.name);
+      const panelId = `${_toSlug(restaurant.name)}-menu-panel`;
+      const buttonId = `${_toSlug(restaurant.name)}-toggle`;
+      const article = document.createElement('article');
+      article.className = 'group';
+      article.setAttribute('itemscope', '');
+      article.setAttribute('itemtype', 'https://schema.org/Restaurant');
 
-    // append card and menu container
-    container.appendChild(a);
-    container.appendChild(menuDiv);
-  });
+      const card = document.createElement('button');
+      card.className = 'block w-full text-left';
+      card.id = buttonId;
+      card.type = 'button';
+      card.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+      card.setAttribute('aria-controls', panelId);
+
+      const secondaryLine = state.hasUserLocation
+        ? restaurant.distanceLabel
+        : (restaurant.address || restaurant.distanceLabel || 'nearby');
+
+      const websiteMarkup = restaurant.website
+        ? `<a class="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline" href="${_escapeAttribute(restaurant.website)}" itemprop="url" rel="noopener noreferrer" target="_blank">Visit website<span aria-hidden="true" class="material-symbols-outlined text-base">open_in_new</span></a>`
+        : '';
+
+      card.innerHTML = `
+        <div class="flex items-center gap-4 ${isExpanded ? 'rounded-t-lg' : 'rounded-lg'} bg-card-light p-4 min-h-[88px] shadow-sm transition-all duration-200 group-hover:shadow-md group-active:scale-[0.98] dark:bg-card-dark">
+          <div class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 shrink-0 size-14">
+            <span class="material-symbols-outlined text-primary text-3xl">${_escapeHtml(restaurant.icon || 'restaurant')}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-text-primary-light dark:text-text-primary-dark text-lg font-semibold leading-tight line-clamp-1" itemprop="name">${_escapeHtml(restaurant.name)}</h3>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal line-clamp-2" itemprop="address">${_escapeHtml(secondaryLine)}</p>
+          </div>
+          <div class="shrink-0 text-text-secondary-light dark:text-text-secondary-dark transition-transform duration-200 ${isExpanded ? 'rotate-90' : 'group-hover:translate-x-1'}">
+            <span class="material-symbols-outlined text-2xl">chevron_right</span>
+          </div>
+        </div>
+      `;
+
+      const menuDiv = document.createElement('div');
+      menuDiv.className = `${isExpanded ? '' : 'hidden '}px-4 pb-4 text-sm text-text-secondary-light dark:text-text-secondary-dark bg-card-light/50 dark:bg-card-dark/50 rounded-b-lg`;
+      menuDiv.id = panelId;
+      menuDiv.setAttribute('role', 'region');
+      menuDiv.setAttribute('aria-labelledby', buttonId);
+      menuDiv.innerHTML = `
+        <div class="space-y-4 pt-3">
+          <p class="text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">${_escapeHtml(_buildRestaurantDescription(restaurant, (_menus.find(candidate => candidate.name === restaurant.name) || { items: [] }).items.filter(item => item.is_vegetarian === true)))}</p>
+          ${websiteMarkup}
+          ${renderMenuHtmlFor(restaurant.name)}
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        if(state.expandedMenus.has(restaurant.name)) {
+          state.expandedMenus.delete(restaurant.name);
+        } else {
+          state.expandedMenus.add(restaurant.name);
+        }
+        renderRestaurants();
+      });
+
+      article.appendChild(card);
+      article.appendChild(menuDiv);
+      container.appendChild(article);
+    });
+  }
+
+  function updateDistancesForUserLocation(latitude, longitude){
+    state.userLocation = { latitude, longitude };
+    state.hasUserLocation = true;
+
+    state.restaurants.forEach((restaurant) => {
+      if(Number.isFinite(restaurant.latitude) && Number.isFinite(restaurant.longitude)) {
+        const distanceMiles = _calculateDistanceMiles(latitude, longitude, restaurant.latitude, restaurant.longitude);
+        restaurant.computedDistanceMiles = distanceMiles;
+        restaurant.distanceLabel = _formatDistanceMiles(distanceMiles);
+        return;
+      }
+
+      restaurant.computedDistanceMiles = null;
+      restaurant.distanceLabel = restaurant.address || 'Distance unavailable';
+    });
+
+    _sortRestaurants();
+    renderRestaurants();
+  }
+
+  function setLocationStatus(message){
+    if(locationStatus) {
+      locationStatus.textContent = message;
+    }
+  }
+
+  if(sortNearestButton) {
+    sortNearestButton.addEventListener('click', () => {
+      if(!navigator.geolocation) {
+        setLocationStatus('Geolocation is not supported in this browser.');
+        return;
+      }
+
+      sortNearestButton.disabled = true;
+      setLocationStatus('Fetching your location and reordering restaurants...');
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          updateDistancesForUserLocation(position.coords.latitude, position.coords.longitude);
+          setLocationStatus('Restaurants sorted from nearest to farthest.');
+          sortNearestButton.disabled = false;
+        },
+        (error) => {
+          const messageByCode = {
+            1: 'Location permission was denied.',
+            2: 'Unable to determine your current location.',
+            3: 'Location lookup timed out.'
+          };
+          setLocationStatus(messageByCode[error.code] || 'Unable to determine your current location.');
+          sortNearestButton.disabled = false;
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000
+        }
+      );
+    });
+  }
+
+  renderRestaurants();
 })();
 </script>
 </div>
-</a>
-</div>
+</section>
 </main>
 </div>
 </body></html>
